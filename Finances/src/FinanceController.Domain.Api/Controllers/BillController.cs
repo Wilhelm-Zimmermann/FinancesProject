@@ -13,11 +13,10 @@ namespace FinanceController.Domain.Api.Controllers
     public class BillController : ControllerBase
     {
         [HttpPost]
-        [Route("create/{billTypeId}")]
+        [Route("create")]
         [Authorize(Privilege = Privileges.BillCreate)]
-        public async Task<ActionResult<GenericCommandResult>> CreateBill([FromBody] CreateBillCommand command, [FromServices] BillHandler handler, Guid billTypeId)
+        public async Task<ActionResult<GenericCommandResult>> CreateBill([FromBody] CreateBillCommand command, [FromServices] BillHandler handler)
         {
-            command.BillTypeId = billTypeId;
             var result = await handler.Handle(command);
 
             return StatusCode(201, result);
@@ -52,6 +51,7 @@ namespace FinanceController.Domain.Api.Controllers
 
         [HttpGet]
         [Route("sum")]
+        [Authorize(Privilege = Privileges.BillRead)]
         public async Task<ActionResult<GenericCommandResult>> GetSumByUserIdAndBillType([FromQuery] GetBillsSumQuery query, [FromServices] BillHandler handler)
         {
             var billsSum = await handler.Handle(query);

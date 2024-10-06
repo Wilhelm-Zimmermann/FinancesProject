@@ -20,18 +20,10 @@ public class PermissionService : IPermissionService
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users
-            .Include(u => u.Privileges.Where(x => x.Name == privilege))
-            .FirstOrDefaultAsync(x => x.Id == userId);
+            .Include(x => x.Privileges)
+            .FirstOrDefaultAsync(x => x.Id == userId && x.Privileges.Any(p => p.Name == privilege));
         
-        if(user != null)
-        {
-            var userPrivilege = user.Privileges.FirstOrDefault();
-
-            if(userPrivilege != null)
-            {
-                return true;
-            }
-        }
+        if(user != null) return true;
 
         return false;
     }

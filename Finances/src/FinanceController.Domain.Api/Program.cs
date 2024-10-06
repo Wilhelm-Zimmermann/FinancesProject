@@ -60,9 +60,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-//DomainSeed.EnsureSeed(app);
-//PrivilegeSeed.EnsureSeed(app);
-//UserPrivilege.EnsureSeedData(app);
+DomainSeed.EnsureSeed(app);
+PrivilegeSeed.EnsureSeed(app);
+UserPrivilege.EnsureSeedData(app);
 
 if (app.Environment.IsDevelopment())
 {

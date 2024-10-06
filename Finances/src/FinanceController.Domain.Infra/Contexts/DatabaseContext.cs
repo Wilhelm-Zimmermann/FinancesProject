@@ -33,6 +33,7 @@ namespace FinanceController.Domain.Infra.Contexts
                 entity.Property(a => a.Name).IsRequired();
                 entity.Property(a => a.Price).IsRequired();
                 entity.Property(a => a.Description);
+                entity.Property(a => a.EffectiveDate);
                 entity.Property(a => a.PaidDate);
                 entity.HasOne(a => a.BillType).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(a => a.User).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
