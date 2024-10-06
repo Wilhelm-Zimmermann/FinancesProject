@@ -23,7 +23,7 @@ namespace FinanceController.Domain.Handlers
         public async Task<ICommandResult> Handle(CreateBillCommand command)
         {
             var userId = _userService.UserId;
-            var bill = new Bill(command.Name, command.Price, command.Description, command.PaidDate, command.BillTypeId, userId);
+            var bill = new Bill(command.Name, command.Price, command.Description, command.PaidDate, command.BillTypeId, userId, command.EffectiveDate);
             await _billRepository.CreateBill(bill);
             return new GenericCommandResult(true, "Bill created sucessfully", command);
         }
