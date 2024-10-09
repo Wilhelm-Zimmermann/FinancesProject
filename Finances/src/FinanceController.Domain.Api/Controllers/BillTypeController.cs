@@ -1,5 +1,6 @@
 ﻿using FinanceController.Domain.Api.Authentication;
 using FinanceController.Domain.Commands;
+using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Handlers;
 using FinanceController.Domain.Infra.Commons.Constants;
 using FinanceController.Domain.Repositories.Contracts;

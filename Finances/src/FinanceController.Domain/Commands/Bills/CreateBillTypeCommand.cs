@@ -1,6 +1,6 @@
 ﻿using FinanceController.Domain.Commands.Contracts;
 
-namespace FinanceController.Domain.Commands
+namespace FinanceController.Domain.Commands.Bills
 {
     public class CreateBillTypeCommand : ICommand
     {

@@ -1,4 +1,4 @@
-﻿using FinanceController.Domain.Commands;
+﻿using FinanceController.Domain.Commands.Users;
 using FinanceController.Domain.Handlers;
 using FinancesLibrary.Events;
 using MassTransit;

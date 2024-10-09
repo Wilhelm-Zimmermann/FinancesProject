@@ -1,5 +1,6 @@
 ﻿
 using FinanceController.Domain.Commands;
+using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Commands.Contracts;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Handlers.Contracts;
