@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using FinanceController.Domain.Commands;
 using FinanceController.Domain.Commands.Contracts;
+using FinanceController.Domain.Commands.Users;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Handlers.Contracts;
 using FinanceController.Domain.Repositories.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace FinanceController.Domain.Handlers;
-public class UserHandler(IUserRepository userRepository, IMapper mapper, ILogger<UserHandler> logger) : IHandler<CreateUserCommand>
+public class UserHandler(IUserRepository userRepository, IMapper mapper, ILogger<UserHandler> logger) : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -18,7 +19,18 @@ public class UserHandler(IUserRepository userRepository, IMapper mapper, ILogger
         var user = _mapper.Map<User>(command);
         await _userRepository.CreateUser(user);
 
-        _logger.LogInformation("User Created successfully");
+        _logger.LogInformation("User from identity server Created successfully");
         return new GenericCommandResult(true, "usuário criado com sucesso", new {});
+    }
+
+    public async Task<ICommandResult> Handle(CreateUserFromRouteCommand command)
+    {
+        var user = new User(command.Email, command.Email, Guid.NewGuid());
+        //foreach (var privilege in command.Privileges)
+        //{
+        //    user.Privileges.Add(privilege);
+        //}
+        await _userRepository.CreateUser(user);
+        return new GenericCommandResult(true, "usuário criado com sucesso", user);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FinanceController.Domain.Commands.Contracts;
 using FinanceController.Domain.Entities;
 
-namespace FinanceController.Domain.Commands
+namespace FinanceController.Domain.Commands.Users
 {
     public class CreateUserCommand : ICommand
     {
