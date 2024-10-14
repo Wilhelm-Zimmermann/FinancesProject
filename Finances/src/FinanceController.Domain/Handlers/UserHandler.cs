@@ -8,9 +8,10 @@ using FinanceController.Domain.Repositories.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace FinanceController.Domain.Handlers;
-public class UserHandler(IUserRepository userRepository, IMapper mapper, ILogger<UserHandler> logger) : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
+public class UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger) : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
 {
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IPrivilegeRepository _privilegeRepository = privilegeRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<UserHandler> _logger = logger;
 
@@ -26,10 +27,14 @@ public class UserHandler(IUserRepository userRepository, IMapper mapper, ILogger
     public async Task<ICommandResult> Handle(CreateUserFromRouteCommand command)
     {
         var user = new User(command.Email, command.Email, Guid.NewGuid());
-        //foreach (var privilege in command.Privileges)
-        //{
-        //    user.Privileges.Add(privilege);
-        //}
+        foreach (var privilegeId in command.Privileges)
+        {
+            var privilege = await _privilegeRepository.GetById(privilegeId);
+            if (privilege != null)
+            {
+                user.Privileges.Add(privilege);
+            } 
+        }
         await _userRepository.CreateUser(user);
         return new GenericCommandResult(true, "usuário criado com sucesso", user);
     }
