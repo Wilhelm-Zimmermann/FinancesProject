@@ -18,6 +18,7 @@ public class PrivilegeSeed : ISeeder
 
         var billDomain = context.Domains.FirstOrDefault(x => x.Name == "Bill");
         var billDomainType = context.Domains.FirstOrDefault(x => x.Name == "BillType");
+        var userDomain = context.Domains.FirstOrDefault(x => x.Name == "User");
 
         if(billDomain != null)
         {
@@ -33,6 +34,14 @@ public class PrivilegeSeed : ISeeder
             context.Privileges.Add(new Privilege(Privileges.BillTypeUpdate, billDomainType.Id));
             context.Privileges.Add(new Privilege(Privileges.BillTypeDelete, billDomainType.Id));
             context.Privileges.Add(new Privilege(Privileges.BillTypeRead, billDomainType.Id));
+        }
+
+        if (userDomain != null)
+        {
+            context.Privileges.Add(new Privilege(Privileges.UserCreate, userDomain.Id));
+            context.Privileges.Add(new Privilege(Privileges.UserRead, userDomain.Id));
+            context.Privileges.Add(new Privilege(Privileges.UserUpdate, userDomain.Id));
+            context.Privileges.Add(new Privilege(Privileges.UserDelete, userDomain.Id));
         }
 
         context.SaveChanges();
