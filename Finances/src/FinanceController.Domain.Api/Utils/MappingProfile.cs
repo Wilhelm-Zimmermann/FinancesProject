@@ -9,7 +9,11 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        // User
         CreateMap<CreateUserCommand, User>().ReverseMap();
+        CreateMap<CreateUserFromRouteCommand, User>().ReverseMap();
+        
+        // Bills
         CreateMap<BillsDto, Bill>().ReverseMap();
     }
 }
