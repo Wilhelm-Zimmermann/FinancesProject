@@ -1,4 +1,5 @@
 ﻿using IdentityServer;
+using IdentityServer.Consumers;
 using MassTransit;
 using Serilog;
 
@@ -14,6 +15,7 @@ try
     builder.Services.AddMassTransit(x =>
     {
         x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("identity", false));
+        x.AddConsumer<CreateUserFromRouteConsumer>();
         x.UsingRabbitMq((context, cfg) =>
         {
             cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>

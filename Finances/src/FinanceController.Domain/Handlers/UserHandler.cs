@@ -19,7 +19,7 @@ public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromR
     private readonly ILogger<UserHandler> _logger ;
     private readonly IPublishEndpoint _publishEndpoint ;
 
-    public UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger, PublishEndpoint publishEndpoint)
+    public UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger, IPublishEndpoint publishEndpoint)
     {
         _userRepository = userRepository;
         _privilegeRepository = privilegeRepository;
@@ -39,7 +39,7 @@ public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromR
 
     public async Task<ICommandResult> Handle(CreateUserFromRouteCommand command)
     {
-        var user = _mapper.Map<User>(command);
+        var user = new User(command.Name, command.Email);
         foreach (var privilegeId in command.Privileges)
         {
             var privilege = await _privilegeRepository.GetById(privilegeId);
@@ -58,6 +58,6 @@ public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromR
         };
         await _userRepository.CreateUser(user);
         await _publishEndpoint.Publish(createUserEvent);
-        return new GenericCommandResult(true, "usuário criado com sucesso", user);
+        return new GenericCommandResult(true, "usuário criado com sucesso", user.Id);
     }
 }

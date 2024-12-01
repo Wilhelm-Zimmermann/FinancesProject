@@ -11,7 +11,6 @@ public class MappingProfile : Profile
     {
         // User
         CreateMap<CreateUserCommand, User>().ReverseMap();
-        CreateMap<CreateUserFromRouteCommand, User>().ReverseMap();
         
         // Bills
         CreateMap<BillsDto, Bill>().ReverseMap();
