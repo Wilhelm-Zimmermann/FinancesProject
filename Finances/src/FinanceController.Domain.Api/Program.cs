@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.ConfigAuthorizationSettings();
-builder.Resolve();
 builder.ResolveMassTransitDependencies();
+builder.Resolve();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -60,9 +60,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-DomainSeed.EnsureSeed(app);
-PrivilegeSeed.EnsureSeed(app);
-UserPrivilege.EnsureSeedData(app);
+// DomainSeed.EnsureSeed(app);
+// PrivilegeSeed.EnsureSeed(app);
+// UserPrivilege.EnsureSeedData(app);
 
 if (app.Environment.IsDevelopment())
 {

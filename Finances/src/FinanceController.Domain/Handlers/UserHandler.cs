@@ -5,15 +5,28 @@ using FinanceController.Domain.Commands.Users;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Handlers.Contracts;
 using FinanceController.Domain.Repositories.Contracts;
+using MassTransit.Transports;
 using Microsoft.Extensions.Logging;
+using FinancesLibrary.Events;
+using MassTransit;
 
 namespace FinanceController.Domain.Handlers;
-public class UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger) : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
+public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
 {
-    private readonly IUserRepository _userRepository = userRepository;
-    private readonly IPrivilegeRepository _privilegeRepository = privilegeRepository;
-    private readonly IMapper _mapper = mapper;
-    private readonly ILogger<UserHandler> _logger = logger;
+    private readonly IUserRepository _userRepository ;
+    private readonly IPrivilegeRepository _privilegeRepository ;
+    private readonly IMapper _mapper ;
+    private readonly ILogger<UserHandler> _logger ;
+    private readonly IPublishEndpoint _publishEndpoint ;
+
+    public UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger, IPublishEndpoint publishEndpoint)
+    {
+        _userRepository = userRepository;
+        _privilegeRepository = privilegeRepository;
+        _mapper = mapper;
+        _logger = logger;
+        _publishEndpoint = publishEndpoint;
+    }
 
     public async Task<ICommandResult> Handle(CreateUserCommand command)
     {
@@ -26,7 +39,7 @@ public class UserHandler(IUserRepository userRepository, IPrivilegeRepository pr
 
     public async Task<ICommandResult> Handle(CreateUserFromRouteCommand command)
     {
-        var user = new User(command.Email, command.Email, Guid.NewGuid());
+        var user = new User(command.Name, command.Email);
         foreach (var privilegeId in command.Privileges)
         {
             var privilege = await _privilegeRepository.GetById(privilegeId);
@@ -35,7 +48,16 @@ public class UserHandler(IUserRepository userRepository, IPrivilegeRepository pr
                 user.Privileges.Add(privilege);
             } 
         }
+
+        var createUserEvent = new CreateUserFromRouteEvent
+        {
+            UserId = user.Id,
+            Name = user.Name,
+            Email = user.Name,
+            Password = command.Password,
+        };
         await _userRepository.CreateUser(user);
-        return new GenericCommandResult(true, "usuário criado com sucesso", user);
+        await _publishEndpoint.Publish(createUserEvent);
+        return new GenericCommandResult(true, "usuário criado com sucesso", user.Id);
     }
 }

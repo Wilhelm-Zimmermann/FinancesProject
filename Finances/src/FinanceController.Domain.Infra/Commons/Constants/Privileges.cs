@@ -12,4 +12,7 @@ public class Privileges
     public const string BillTypeDelete= "billtype-delete";
 
     public const string UserCreate = "user-create";
+    public const string UserRead = "user-read";
+    public const string UserUpdate = "user-update";
+    public const string UserDelete = "user-delete";
 }

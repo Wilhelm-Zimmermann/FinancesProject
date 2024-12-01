@@ -17,6 +17,7 @@ public class DomainSeed : ISeeder
 
         context.Domains.Add(new Entities.Domain("Bill"));
         context.Domains.Add(new Entities.Domain("BillType"));
+        context.Domains.Add(new Entities.Domain("User"));
 
         context.SaveChanges();
     }
