@@ -7,6 +7,7 @@ public class BillsDto
     public double Price { get; set; }
     public string Description { get; set; }
     public DateTime PaidDate { get; set; }
+    public DateTime EffectiveDate { get; set; }
 
     public Guid BillTypeId { get; set; }
 

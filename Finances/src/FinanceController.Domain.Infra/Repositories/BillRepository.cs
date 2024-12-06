@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Infra.Contexts;
 using FinanceController.Domain.Queries.Bills;
+using FinanceController.Domain.Queries.Bills.GetBillsSum;
 using FinanceController.Domain.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,6 +56,15 @@ namespace FinanceController.Domain.Infra.Repositories
             return await _context.Bills
                 .Where(x => x.UserId == userId)
                 .Where(x => x.BillTypeId == billTypeId)
+                .SumAsync(x => x.Price);
+        }
+
+        public async Task<double> SumAllByUserIdAndBillTypeMonthly(GetBillsMonthSumQuery command)
+        {
+            return await _context.Bills
+                .Where(x => x.UserId == command.UserId)
+                .Where(x => x.BillTypeId == command.BillTypeId)
+                .Where(x => x.EffectiveDate.Month == command.EffectiveDate.Month && x.EffectiveDate.Year == command.EffectiveDate.Year)
                 .SumAsync(x => x.Price);
         }
     }

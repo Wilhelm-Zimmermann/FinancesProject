@@ -36,5 +36,13 @@ namespace FinanceController.Domain.Handlers
 
             return new GenericCommandResult(true, "Bills sum", billsSum);
         }
+
+        public async Task<ICommandResult> Handle(GetBillsMonthSumQuery command)
+        {
+            var userId = _userService.UserId;
+            var billsSum = await _billRepository.SumAllByUserIdAndBillTypeMonthly(command);
+
+            return new GenericCommandResult(true, "Bills monthly sum", billsSum);
+        }
     }
 }

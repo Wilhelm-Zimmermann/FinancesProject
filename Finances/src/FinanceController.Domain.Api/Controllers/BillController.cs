@@ -60,6 +60,17 @@ namespace FinanceController.Domain.Api.Controllers
             return Ok(billsSum);
         }
 
+        [HttpGet]
+        [Route("sum/month")]
+        [Authorize(Privilege = Privileges.BillRead)]
+        public async Task<ActionResult<GenericCommandResult>> SumAllByUserIdAndBillTypeMonthly(
+            [FromQuery] GetBillsMonthSumQuery query, [FromServices] BillHandler handler)
+        {
+            var billsSum = await handler.Handle(query);
+
+            return Ok(billsSum);
+        }
+
         [HttpDelete]
         [Route("delete/{id}")]
         [Authorize(Privilege = Privileges.BillDelete)]
