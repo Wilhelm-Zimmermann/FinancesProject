@@ -1,4 +1,4 @@
-﻿using FinanceController.Domain.Api.Errors;
+﻿using FinanceController.Domain.Shared.Utils.Errors;
 using Newtonsoft.Json;
 
 namespace FinanceController.Domain.Api.Middlewares

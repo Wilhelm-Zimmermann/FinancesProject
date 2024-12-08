@@ -2,8 +2,8 @@
 {
     public class BillType : Base
     {
-        public string Type { get; private set; }
-        public IList<Bill> Bills { get; private set; }
+        public string Type { get; set; }
+        public IList<Bill> Bills { get; set; }
 
         public BillType(string type)
         {

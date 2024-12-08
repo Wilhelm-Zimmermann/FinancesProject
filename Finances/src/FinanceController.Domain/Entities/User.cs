@@ -1,9 +1,8 @@
 ﻿namespace FinanceController.Domain.Entities;
 public class User : Base
 {
-    public Guid Id { get; set; }
-    public string? Name { get; private set; }
-    public string? Email { get; private set; }
+    public string? Name { get; set; }
+    public string? Email { get; set; }
 
     public IList<Bill> Bills { get; private set; } = new List<Bill>();
     public IList<Privilege> Privileges { get; private set; } = new List<Privilege>();
