@@ -23,6 +23,15 @@ namespace FinanceController.Domain.Api.Controllers
             return StatusCode(201, result);
         }
 
+        [HttpPut]
+        [Route("update")]
+        [Authorize(Privilege = Privileges.BillUpdate)]
+        public async Task<ActionResult<GenericCommandResult>> UpdateBill([FromBody] UpdateBillCommand command, [FromServices] BillHandler handler)
+        {
+            var result = await handler.Handle(command);
+            return StatusCode(200, result);
+        }
+
         [HttpGet]
         [Route("list")]
         [Authorize(Privilege = Privileges.BillRead)]

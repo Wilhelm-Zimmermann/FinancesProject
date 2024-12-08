@@ -9,7 +9,6 @@ namespace FinanceController.Domain.Commands.Bills
         public string Description { get; set; }
         public DateTime PaidDate { get; set; }
         public DateTime EffectiveDate { get; private set; }
-
         public Guid BillTypeId { get; set; }
 
         public CreateBillCommand(string name, double price, string description, DateTime paidDate, Guid billTypeId, DateTime effectiveDate)

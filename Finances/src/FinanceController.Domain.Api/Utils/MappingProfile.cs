@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Commands.Users;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Queries.Bills;
@@ -14,5 +15,6 @@ public class MappingProfile : Profile
         
         // Bills
         CreateMap<BillsDto, Bill>().ReverseMap();
+        CreateMap<UpdateBillCommand, Bill>().ReverseMap();
     }
 }
