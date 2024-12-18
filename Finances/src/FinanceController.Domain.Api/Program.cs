@@ -14,18 +14,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var AllowedOrigins = "_allowedOrigins";
+const string allowedOrigins = "AllowAllOrigins";
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: AllowedOrigins,
-            builder =>
-            {
-                builder.AllowAnyOrigin();
-                builder.AllowAnyMethod();
-                builder.AllowAnyHeader();
-            });
+    options.AddPolicy(allowedOrigins, policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
+
+// builder.Services.AddCors();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -72,11 +73,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<UserIdMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
 app.UseRouting();
-
-app.UseHttpsRedirection();
-
+// app.UseHttpsRedirection();
+app.UseCors(allowedOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
