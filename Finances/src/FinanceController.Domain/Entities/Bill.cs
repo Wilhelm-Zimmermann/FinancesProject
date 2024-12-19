@@ -1,10 +1,13 @@
-﻿namespace FinanceController.Domain.Entities
+﻿using FinanceController.Domain.Enums;
+
+namespace FinanceController.Domain.Entities
 {
     public class Bill : Base
     {
         public string Name { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
+        public string TransactionType { get; set; }
         public DateTime PaidDate { get; set; }
         public DateTime EffectiveDate { get; set; }
 
@@ -16,11 +19,12 @@
         
         public Bill() {}
 
-        public Bill(string name, double price, string description, DateTime paidDate, Guid billTypeId, Guid userId, DateTime effectiveDate)
+        public Bill(string name, double price, string description, string transactionType, DateTime paidDate, Guid billTypeId, Guid userId, DateTime effectiveDate)
         {
             Name = name;
             Price = price;
             Description = description;
+            TransactionType = transactionType;
             PaidDate = paidDate;
             BillTypeId = billTypeId;
             UserId = userId;
