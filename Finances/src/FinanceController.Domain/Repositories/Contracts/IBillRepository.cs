@@ -11,7 +11,7 @@ namespace FinanceController.Domain.Repositories.Contracts
         Task UpdateBill(UpdateBillCommand command);
         Task<IEnumerable<BillsDto>> GetAllBills();
         Task DeleteBill(Guid id);
-        Task<IEnumerable<BillsDto>> ListBillsByUserId(Guid userId);
+        Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billQuery, Guid userId);
         Task<double> SumAllByUserIdAndBillType(Guid userId, Guid billTypeId);
         Task<double> SumAllByUserIdAndBillTypeMonthly(GetBillsMonthSumQuery command);
     }
