@@ -19,7 +19,18 @@ internal static class HostingExtensions
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins", policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+        
         builder.Services
             .AddIdentityServer(options =>
             {
@@ -59,6 +70,7 @@ internal static class HostingExtensions
         }
 
         app.UseStaticFiles();
+        app.UseCors("AllowAllOrigins");
         app.UseRouting();
         app.UseIdentityServer();
         app.UseAuthorization();
