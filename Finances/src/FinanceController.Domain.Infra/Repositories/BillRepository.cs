@@ -40,6 +40,7 @@ namespace FinanceController.Domain.Infra.Repositories
             bill.EffectiveDate = command.EffectiveDate;
             bill.PaidDate = command.PaidDate;  
             bill.BillTypeId = command.BillTypeId;
+            bill.TransactionType = command.TransactionType.ToString();
             
             _context.Bills.Update(bill);
             await _context.SaveChangesAsync();
