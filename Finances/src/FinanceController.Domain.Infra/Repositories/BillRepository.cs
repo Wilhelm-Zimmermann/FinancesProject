@@ -40,6 +40,7 @@ namespace FinanceController.Domain.Infra.Repositories
             bill.EffectiveDate = command.EffectiveDate;
             bill.PaidDate = command.PaidDate;  
             bill.BillTypeId = command.BillTypeId;
+            bill.TransactionType = command.TransactionType.ToString();
             
             _context.Bills.Update(bill);
             await _context.SaveChangesAsync();
@@ -62,12 +63,29 @@ namespace FinanceController.Domain.Infra.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<BillsDto>> ListBillsByUserId(Guid userId)
+        public async Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billsQuery, Guid userId)
         {
-            return await _context.Bills
-                .Where(BillsQueries.ListBillsByUserId(userId))
+            var billsQueryResult = _context.Bills
+                .Where(x => x.UserId == userId);
+            
+            if (billsQuery.StartDate.HasValue && billsQuery.EndDate.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.EffectiveDate >= billsQuery.StartDate && x.EffectiveDate <= billsQuery.EndDate);
+            }
+
+            if (billsQuery.BillTypeId.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.BillTypeId == billsQuery.BillTypeId);
+            }
+
+            if (billsQuery.TransactionType.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType.ToString());
+            }
+            
+            return await billsQueryResult
                 .ProjectTo<BillsDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ToListAsync();;
         }
 
         public async Task<double> SumAllByUserIdAndBillType(Guid userId, Guid billTypeId)

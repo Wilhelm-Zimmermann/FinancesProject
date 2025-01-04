@@ -3,6 +3,7 @@ using FinanceController.Domain.Commands;
 using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Handlers;
 using FinanceController.Domain.Infra.Commons.Constants;
+using FinanceController.Domain.Queries.Bills;
 using FinanceController.Domain.Queries.Bills.GetBillsSum;
 using FinanceController.Domain.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -46,10 +47,10 @@ namespace FinanceController.Domain.Api.Controllers
         [HttpGet]
         [Route("list/user-logged")]
         [Authorize(Privilege = Privileges.BillRead)]
-        public async Task<ActionResult<GenericCommandResult>> ListLoggedUserBills([FromServices] IBillRepository repository)
+        public async Task<ActionResult<GenericCommandResult>> ListLoggedUserBills([FromQuery] GetAllBillsQuery billsQuery, [FromServices] IBillRepository repository)
         {
             var userId = HttpContext.Items["UserId"];
-            var bills = await repository.ListBillsByUserId((Guid)userId);
+            var bills = await repository.ListBillsByUserId(billsQuery, (Guid)userId);
 
             if(bills.ToArray().Length <= 0)
             {
