@@ -38,7 +38,7 @@ namespace FinanceController.Domain.Handlers
         {
             await _billRepository.UpdateBill(command);
             
-            return new GenericCommandResult(true, "Bill updated sucessfully", command);
+            return new GenericCommandResult(true, "Bill updated sucessfully", _mapper.Map<BillsDto>(command));
         }
 
         public async Task<ICommandResult> Handle(GetBillsSumQuery command)

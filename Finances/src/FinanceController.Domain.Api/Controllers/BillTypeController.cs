@@ -29,7 +29,7 @@ namespace FinanceController.Domain.Api.Controllers
         {
             var result = await repository.GetAllBillTypes();
 
-            return StatusCode(200, result);
+            return StatusCode(200, new GenericCommandResult(true, "Bill types fetched", result));
         }
 
         [HttpDelete]
