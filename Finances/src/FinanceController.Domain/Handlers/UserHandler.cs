@@ -4,28 +4,32 @@ using FinanceController.Domain.Commands.Contracts;
 using FinanceController.Domain.Commands.Users;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Handlers.Contracts;
+using FinanceController.Domain.Queries.Users;
+using FinanceController.Domain.Queries.Users.GetById;
 using FinanceController.Domain.Repositories.Contracts;
-using MassTransit.Transports;
-using Microsoft.Extensions.Logging;
+using FinanceController.Domain.RequestHelpers;
 using FinancesLibrary.Events;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace FinanceController.Domain.Handlers;
-public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>
+public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromRouteCommand>, IHandler<GetMeQuery>
 {
     private readonly IUserRepository _userRepository ;
     private readonly IPrivilegeRepository _privilegeRepository ;
     private readonly IMapper _mapper ;
     private readonly ILogger<UserHandler> _logger ;
     private readonly IPublishEndpoint _publishEndpoint ;
+    private readonly IUserService _userService;
 
-    public UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger, IPublishEndpoint publishEndpoint)
+    public UserHandler(IUserRepository userRepository, IPrivilegeRepository privilegeRepository, IMapper mapper, ILogger<UserHandler> logger, IPublishEndpoint publishEndpoint, IUserService userService)
     {
         _userRepository = userRepository;
         _privilegeRepository = privilegeRepository;
         _mapper = mapper;
         _logger = logger;
         _publishEndpoint = publishEndpoint;
+        _userService = userService;
     }
 
     public async Task<ICommandResult> Handle(CreateUserCommand command)
@@ -59,5 +63,12 @@ public class UserHandler : IHandler<CreateUserCommand>, IHandler<CreateUserFromR
         await _userRepository.CreateUser(user);
         await _publishEndpoint.Publish(createUserEvent);
         return new GenericCommandResult(true, "usuário criado com sucesso", user.Id);
+    }
+
+    public async Task<ICommandResult> Handle(GetMeQuery command)
+    {
+        var user = await _userRepository.GetById(_userService.UserId);
+
+        return new GenericCommandResult(true, "User profile fetched", _mapper.Map<UserDto>(user));
     }
 }
