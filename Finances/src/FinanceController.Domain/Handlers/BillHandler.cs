@@ -4,6 +4,7 @@ using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Commands.Contracts;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Handlers.Contracts;
+using FinanceController.Domain.Queries.Bills;
 using FinanceController.Domain.Queries.Bills.GetBillsSum;
 using FinanceController.Domain.Repositories.Contracts;
 using FinanceController.Domain.RequestHelpers;
@@ -30,7 +31,7 @@ namespace FinanceController.Domain.Handlers
             var userId = _userService.UserId;
             var bill = new Bill(command.Name, command.Price, command.Description, command.TransactionType.ToString(), command.PaidDate, command.BillTypeId, userId, command.EffectiveDate);
             await _billRepository.CreateBill(bill);
-            return new GenericCommandResult(true, "Bill created sucessfully", command);
+            return new GenericCommandResult(true, "Bill created sucessfully", _mapper.Map<BillsDto>(bill));
         }
         
         public async Task<ICommandResult> Handle(UpdateBillCommand command)
@@ -46,14 +47,6 @@ namespace FinanceController.Domain.Handlers
             var billsSum = await _billRepository.SumAllByUserIdAndBillType(userId, command.BillTypeId);
 
             return new GenericCommandResult(true, "Bills sum", billsSum);
-        }
-
-        public async Task<ICommandResult> Handle(GetBillsMonthSumQuery command)
-        {
-            command.UserId = _userService.UserId;
-            var billsSum = await _billRepository.SumAllByUserIdAndBillTypeMonthly(command);
-
-            return new GenericCommandResult(true, "Bills monthly sum", billsSum);
         }
     }
 }

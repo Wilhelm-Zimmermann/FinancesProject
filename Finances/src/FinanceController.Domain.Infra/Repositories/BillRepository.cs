@@ -63,6 +63,11 @@ namespace FinanceController.Domain.Infra.Repositories
                 .ToListAsync();
         }
 
+        public async Task<BillsDto> GetBillById(Guid id)
+        {
+            return await _context.Bills.Where(x => x.Id == id).ProjectTo<BillsDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billsQuery, Guid userId)
         {
             var billsQueryResult = _context.Bills
@@ -93,15 +98,6 @@ namespace FinanceController.Domain.Infra.Repositories
             return await _context.Bills
                 .Where(x => x.UserId == userId)
                 .Where(x => x.BillTypeId == billTypeId)
-                .SumAsync(x => x.Price);
-        }
-
-        public async Task<double> SumAllByUserIdAndBillTypeMonthly(GetBillsMonthSumQuery command)
-        {
-            return await _context.Bills
-                .Where(x => x.UserId == command.UserId)
-                .Where(x => x.BillTypeId == command.BillTypeId)
-                .Where(x => x.EffectiveDate.Month == command.EffectiveDate.Month && x.EffectiveDate.Year == command.EffectiveDate.Year)
                 .SumAsync(x => x.Price);
         }
     }

@@ -45,6 +45,17 @@ namespace FinanceController.Domain.Api.Controllers
         }
 
         [HttpGet]
+        [Route("list/{id}")]
+        [Authorize(Privilege = Privileges.BillRead)]
+        public async Task<ActionResult<GenericCommandResult>> GetBillById(Guid id, [FromServices] IBillRepository repository)
+        {
+            var bill = await repository.GetBillById(id);
+            var result = new GenericCommandResult(true, "Bill found", bill);
+
+            return StatusCode(200, result);
+        }
+
+        [HttpGet]
         [Route("list/user-logged")]
         [Authorize(Privilege = Privileges.BillRead)]
         public async Task<ActionResult<GenericCommandResult>> ListLoggedUserBills([FromQuery] GetAllBillsQuery billsQuery, [FromServices] IBillRepository repository)
@@ -64,17 +75,6 @@ namespace FinanceController.Domain.Api.Controllers
         [Route("sum")]
         [Authorize(Privilege = Privileges.BillRead)]
         public async Task<ActionResult<GenericCommandResult>> GetSumByUserIdAndBillType([FromQuery] GetBillsSumQuery query, [FromServices] BillHandler handler)
-        {
-            var billsSum = await handler.Handle(query);
-
-            return Ok(billsSum);
-        }
-
-        [HttpGet]
-        [Route("sum/month")]
-        [Authorize(Privilege = Privileges.BillRead)]
-        public async Task<ActionResult<GenericCommandResult>> SumAllByUserIdAndBillTypeMonthly(
-            [FromQuery] GetBillsMonthSumQuery query, [FromServices] BillHandler handler)
         {
             var billsSum = await handler.Handle(query);
 
