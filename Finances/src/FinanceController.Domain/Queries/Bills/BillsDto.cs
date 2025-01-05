@@ -1,6 +1,4 @@
-﻿using FinanceController.Domain.Entities;
-
-namespace FinanceController.Domain.Queries.Bills;
+﻿namespace FinanceController.Domain.Queries.Bills;
 public class BillsDto
 {
     public Guid Id { get; set; }

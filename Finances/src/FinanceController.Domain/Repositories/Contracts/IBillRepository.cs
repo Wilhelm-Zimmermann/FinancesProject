@@ -9,10 +9,10 @@ namespace FinanceController.Domain.Repositories.Contracts
     {
         Task CreateBill(Bill command);
         Task UpdateBill(UpdateBillCommand command);
+        Task<BillsDto> GetBillById(Guid id);
         Task<IEnumerable<BillsDto>> GetAllBills();
         Task DeleteBill(Guid id);
         Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billQuery, Guid userId);
-        Task<double> SumAllByUserIdAndBillType(Guid userId, Guid billTypeId);
-        Task<double> SumAllByUserIdAndBillTypeMonthly(GetBillsMonthSumQuery command);
+        Task<double> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery);
     }
 }
