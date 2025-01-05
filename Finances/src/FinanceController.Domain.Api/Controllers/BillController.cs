@@ -63,11 +63,6 @@ namespace FinanceController.Domain.Api.Controllers
             var userId = HttpContext.Items["UserId"];
             var bills = await repository.ListBillsByUserId(billsQuery, (Guid)userId);
 
-            if(bills.ToArray().Length <= 0)
-            {
-                return NotFound("No bills for this user");
-            }
-
             return Ok(new GenericCommandResult(true, "Bills fetched successfully", bills));
         }
 
