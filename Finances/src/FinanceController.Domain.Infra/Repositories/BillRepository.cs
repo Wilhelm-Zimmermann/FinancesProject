@@ -90,15 +90,30 @@ namespace FinanceController.Domain.Infra.Repositories
             
             return await billsQueryResult
                 .ProjectTo<BillsDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();;
+                .ToListAsync();
         }
 
-        public async Task<double> SumAllByUserIdAndBillType(Guid userId, Guid billTypeId)
+        public async Task<double> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery)
         {
-            return await _context.Bills
-                .Where(x => x.UserId == userId)
-                .Where(x => x.BillTypeId == billTypeId)
-                .SumAsync(x => x.Price);
+            var billsQueryResult = _context.Bills
+                            .Where(x => x.UserId == userId);
+
+            if (billsQuery.StartDate.HasValue && billsQuery.EndDate.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.EffectiveDate >= billsQuery.StartDate && x.EffectiveDate <= billsQuery.EndDate);
+            }
+
+            if (billsQuery.BillTypeId.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.BillTypeId == billsQuery.BillTypeId);
+            }
+
+            if (billsQuery.TransactionType.HasValue)
+            {
+                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType.ToString());
+            }
+
+            return await billsQueryResult.SumAsync(x => x.Price);
         }
     }
 }

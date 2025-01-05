@@ -1,6 +1,7 @@
 ﻿using FinanceController.Domain.Commands.Bills;
 using FinanceController.Domain.Entities;
 using FinanceController.Domain.Queries.Bills;
+using FinanceController.Domain.Queries.Bills.GetBillsSum;
 
 namespace FinanceController.Domain.Repositories.Contracts
 {
@@ -12,6 +13,6 @@ namespace FinanceController.Domain.Repositories.Contracts
         Task<IEnumerable<BillsDto>> GetAllBills();
         Task DeleteBill(Guid id);
         Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billQuery, Guid userId);
-        Task<double> SumAllByUserIdAndBillType(Guid userId, Guid billTypeId);
+        Task<double> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery);
     }
 }

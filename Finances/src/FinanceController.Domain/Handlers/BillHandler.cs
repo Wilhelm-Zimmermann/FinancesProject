@@ -44,7 +44,7 @@ namespace FinanceController.Domain.Handlers
         public async Task<ICommandResult> Handle(GetBillsSumQuery command)
         {
             var userId = _userService.UserId;
-            var billsSum = await _billRepository.SumAllByUserIdAndBillType(userId, command.BillTypeId);
+            var billsSum = await _billRepository.SumAllByUser(userId, command);
 
             return new GenericCommandResult(true, "Bills sum", billsSum);
         }
