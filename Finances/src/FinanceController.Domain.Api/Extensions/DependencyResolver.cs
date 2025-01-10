@@ -24,7 +24,7 @@ namespace FinanceController.Domain.Api.Extensions
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // SERVICES
-            builder.Services.AddSingleton<IUserService, UserService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             // REPOSITORIES
             builder.Services.AddScoped<IBillTypeRepository, BillTypeRepository>();

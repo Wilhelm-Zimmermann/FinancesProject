@@ -18,7 +18,7 @@ public class Authorize : Attribute, IAsyncActionFilter
 
         if(userId is null)
         {
-            context.Result = new UnauthorizedResult();
+            context.Result = new ForbidResult();
             return;
         }
 

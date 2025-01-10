@@ -23,6 +23,7 @@ public class CreateUserFromRouteConsumer : IConsumer<CreateUserFromRouteEvent>
         var user = context.Message;
         var newUser = new ApplicationUser()
         {
+            Id = user.UserId.ToString(),
             UserName = user.Name,
             Email = user.Email,
         };
@@ -32,14 +33,14 @@ public class CreateUserFromRouteConsumer : IConsumer<CreateUserFromRouteEvent>
             _logger.LogError("Failed to create user");
         }
 
-        result = _userMgr.AddClaimsAsync(newUser, new Claim[]
-        {
-            new(JwtClaimTypes.GivenName, user.Name),
+        result = _userMgr.AddClaimsAsync(newUser, new Claim[]{
+            new Claim(JwtClaimTypes.Name, user.Name),
+            new Claim(JwtClaimTypes.GivenName, user.Email),
+            new Claim(JwtClaimTypes.FamilyName, user.Name),
         }).Result;
-        
         if (!result.Succeeded)
         {
-           _logger.LogError("Failed to create user");
+            _logger.LogError("Failed to create user");
         }
     }
 }
