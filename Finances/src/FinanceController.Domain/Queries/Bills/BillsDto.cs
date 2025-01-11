@@ -10,6 +10,7 @@ public class BillsDto
     public string TransactionType { get; set; }
     public DateTime PaidDate { get; set; }
     public DateTime EffectiveDate { get; set; }
+    public Guid BillTypeId { get; set; }
     public BillTypeDto BillType { get; set; }
     public Guid UserId { get; set; }
 }
