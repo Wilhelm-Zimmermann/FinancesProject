@@ -13,6 +13,6 @@ namespace FinanceController.Domain.Repositories.Contracts
         Task<IEnumerable<BillsDto>> GetAllBills();
         Task DeleteBill(Guid id);
         Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billQuery, Guid userId);
-        Task<double> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery);
+        Task<decimal> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery);
     }
 }

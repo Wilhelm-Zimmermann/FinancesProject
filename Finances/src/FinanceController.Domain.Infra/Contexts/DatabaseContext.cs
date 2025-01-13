@@ -11,7 +11,7 @@ namespace FinanceController.Domain.Infra.Contexts
         public DbSet<Entities.Domain> Domains { get; set; }
         public DbSet<Privilege> Privileges { get; set; }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) 
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 
@@ -28,16 +28,19 @@ namespace FinanceController.Domain.Infra.Contexts
             });
 
             modelBuilder.Entity<Bill>(entity =>
-            {
-                entity.HasKey(a => a.Id);
-                entity.Property(a => a.Name).IsRequired();
-                entity.Property(a => a.Price).IsRequired();
-                entity.Property(a => a.Description);
-                entity.Property(a => a.EffectiveDate);
-                entity.Property(a => a.PaidDate);
-                entity.HasOne(a => a.BillType).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(a => a.User).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
-            });
+                {
+                    entity.HasKey(a => a.Id);
+                    entity.Property(a => a.Name).IsRequired();
+                    entity.Property(a => a.Price).IsRequired();
+                    entity.Property(a => a.Description);
+                    entity.Property(a => a.EffectiveDate);
+                    entity.Property(a => a.PaidDate);
+                    entity.Property(a => a.TransactionType).HasConversion<string>();
+                    entity.Property(a => a.PaymentStatus).HasConversion<string>();
+                    entity.Property(a => a.Currency).HasConversion<string>();
+                    entity.HasOne(a => a.BillType).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
+                    entity.HasOne(a => a.User).WithMany(x => x.Bills).OnDelete(DeleteBehavior.Cascade);
+                });
 
             modelBuilder.Entity<User>(entity =>
             {
