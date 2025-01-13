@@ -1,13 +1,18 @@
 ﻿using FinanceController.Domain.Enums;
+using FinanceController.Domain.Enums.Bills;
 
 namespace FinanceController.Domain.Entities
 {
     public class Bill : Base
     {
         public string Name { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
+        public bool IsRecurring { get; set; }
         public string? Description { get; set; }
-        public string TransactionType { get; set; }
+        public string? RecurrencePattern { get; set; }
+        public ETransactionType TransactionType { get; set; }
+        public EPaymentStatus PaymentStatus { get; set; }
+        public ECurrency Currency { get; set; }
         public DateTime? PaidDate { get; set; }
         public DateTime EffectiveDate { get; set; }
 
@@ -19,16 +24,20 @@ namespace FinanceController.Domain.Entities
         
         public Bill() {}
 
-        public Bill(string name, double price, string description, string transactionType, DateTime paidDate, Guid billTypeId, Guid userId, DateTime effectiveDate)
+        public Bill(string name, decimal price, bool isRecurring, string? description, string? recurrencePattern, ETransactionType transactionType, EPaymentStatus paymentStatus, ECurrency currency, DateTime? paidDate, DateTime effectiveDate, Guid billTypeId, Guid userId)
         {
             Name = name;
             Price = price;
+            IsRecurring = isRecurring;
             Description = description;
+            RecurrencePattern = recurrencePattern;
             TransactionType = transactionType;
+            PaymentStatus = paymentStatus;
+            Currency = currency;
             PaidDate = paidDate;
+            EffectiveDate = effectiveDate;
             BillTypeId = billTypeId;
             UserId = userId;
-            EffectiveDate = effectiveDate;
         }
 
         public void SetPaidDate(DateTime paidDate)

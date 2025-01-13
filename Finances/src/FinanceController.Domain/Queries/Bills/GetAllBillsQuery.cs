@@ -1,4 +1,4 @@
-﻿using FinanceController.Domain.Enums;
+﻿using FinanceController.Domain.Enums.Bills;
 
 namespace FinanceController.Domain.Queries.Bills;
 

@@ -40,7 +40,7 @@ namespace FinanceController.Domain.Infra.Repositories
             bill.EffectiveDate = command.EffectiveDate;
             bill.PaidDate = command.PaidDate;  
             bill.BillTypeId = command.BillTypeId;
-            bill.TransactionType = command.TransactionType.ToString();
+            bill.TransactionType = command.TransactionType;
             
             _context.Bills.Update(bill);
             await _context.SaveChangesAsync();
@@ -85,7 +85,7 @@ namespace FinanceController.Domain.Infra.Repositories
 
             if (billsQuery.TransactionType.HasValue)
             {
-                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType.ToString());
+                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType);
             }
             
             return await billsQueryResult
@@ -93,7 +93,7 @@ namespace FinanceController.Domain.Infra.Repositories
                 .ToListAsync();
         }
 
-        public async Task<double> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery)
+        public async Task<decimal> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery)
         {
             var billsQueryResult = _context.Bills
                             .Where(x => x.UserId == userId);
@@ -110,7 +110,7 @@ namespace FinanceController.Domain.Infra.Repositories
 
             if (billsQuery.TransactionType.HasValue)
             {
-                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType.ToString());
+                billsQueryResult = billsQueryResult.Where(x => x.TransactionType == billsQuery.TransactionType);
             }
 
             return await billsQueryResult.SumAsync(x => x.Price);

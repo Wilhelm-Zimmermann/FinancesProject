@@ -1,5 +1,5 @@
 ﻿using FinanceController.Domain.Commands.Contracts;
-using FinanceController.Domain.Enums;
+using FinanceController.Domain.Enums.Bills;
 
 namespace FinanceController.Domain.Queries.Bills.GetBillsSum;
 public class GetBillsSumQuery : ICommand

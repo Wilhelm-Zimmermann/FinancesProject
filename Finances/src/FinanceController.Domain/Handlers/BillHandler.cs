@@ -28,14 +28,15 @@ namespace FinanceController.Domain.Handlers
         }
         public async Task<ICommandResult> Handle(CreateBillCommand command)
         {
-            var userId = _userService.UserId;
-            var bill = new Bill(command.Name, command.Price, command.Description, command.TransactionType.ToString(), command.PaidDate, command.BillTypeId, userId, command.EffectiveDate);
+            command.UserId = _userService.UserId;
+            var bill = _mapper.Map<Bill>(command);
             await _billRepository.CreateBill(bill);
             return new GenericCommandResult(true, "Bill created sucessfully", _mapper.Map<BillsDto>(bill));
         }
         
         public async Task<ICommandResult> Handle(UpdateBillCommand command)
         {
+            command.UserId = _userService.UserId;
             await _billRepository.UpdateBill(command);
             
             return new GenericCommandResult(true, "Bill updated sucessfully", _mapper.Map<BillsDto>(command));
