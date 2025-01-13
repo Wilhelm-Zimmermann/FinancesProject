@@ -18,6 +18,7 @@ public class MappingProfile : Profile
         
         // Bills
         CreateMap<BillsDto, Bill>().ReverseMap();
+        CreateMap<CreateBillCommand, Bill>().ReverseMap();
         CreateMap<UpdateBillCommand, Bill>().ReverseMap();
         CreateMap<UpdateBillCommand, BillsDto>().ReverseMap();
         

@@ -28,6 +28,7 @@ namespace FinanceController.Domain.Handlers
         }
         public async Task<ICommandResult> Handle(CreateBillCommand command)
         {
+            command.UserId = _userService.UserId;
             var bill = _mapper.Map<Bill>(command);
             await _billRepository.CreateBill(bill);
             return new GenericCommandResult(true, "Bill created sucessfully", _mapper.Map<BillsDto>(bill));
@@ -35,6 +36,7 @@ namespace FinanceController.Domain.Handlers
         
         public async Task<ICommandResult> Handle(UpdateBillCommand command)
         {
+            command.UserId = _userService.UserId;
             await _billRepository.UpdateBill(command);
             
             return new GenericCommandResult(true, "Bill updated sucessfully", _mapper.Map<BillsDto>(command));
