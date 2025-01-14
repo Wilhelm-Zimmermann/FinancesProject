@@ -4,6 +4,8 @@ using FinanceController.Domain.Infra.Repositories;
 using FinanceController.Domain.Repositories.Contracts;
 using FinanceController.Domain.RequestHelpers;
 using FinanceController.Domain.RequestHelpers.Implementations;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceController.Domain.Api.Extensions
@@ -21,6 +23,15 @@ namespace FinanceController.Domain.Api.Extensions
                 });
             });
 
+            // Hangfire configs
+            builder.Services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UsePostgreSqlStorage(config => config.UseNpgsqlConnection(builder.Configuration.GetConnectionString("HangfireConnection"))));
+            builder.Services.AddHangfireServer();
+
+            // Auto Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // SERVICES
