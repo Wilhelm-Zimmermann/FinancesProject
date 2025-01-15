@@ -1,9 +1,18 @@
-﻿using Hangfire;
+﻿using FinanceController.Domain.Jobs.Handlers;
+using FinanceController.Domain.Jobs.Commands.Bills;
+using Hangfire;
 using Hangfire.Common;
 
 namespace FinanceController.Domain.Infra.Jobs;
 public class CreateRecurringBills : IJob
 {
+    private readonly BillJobHandler _billJobHandler;
+
+    public CreateRecurringBills(BillJobHandler billJobHandler)
+    {
+        _billJobHandler = billJobHandler;
+    }
+
     public void Register()
     {
         var manager = new RecurringJobManager();
@@ -17,5 +26,6 @@ public class CreateRecurringBills : IJob
     public async Task Execute()
     {
         Console.WriteLine("Creating Recurring bills....");
+        await _billJobHandler.Handle(new CreateBillJobCommand());
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FinanceController.Domain.Handlers;
 using FinanceController.Domain.Infra.Contexts;
 using FinanceController.Domain.Infra.Repositories;
+using FinanceController.Domain.Jobs.Handlers;
 using FinanceController.Domain.Repositories.Contracts;
 using FinanceController.Domain.RequestHelpers;
 using FinanceController.Domain.RequestHelpers.Implementations;
@@ -47,6 +48,9 @@ namespace FinanceController.Domain.Api.Extensions
             builder.Services.AddScoped<BillTypeHandler, BillTypeHandler>();
             builder.Services.AddScoped<BillHandler, BillHandler>();
             builder.Services.AddScoped<UserHandler, UserHandler>();
+
+            // Job Handlers
+            builder.Services.AddScoped<BillJobHandler, BillJobHandler>();
         }
     }
 }
