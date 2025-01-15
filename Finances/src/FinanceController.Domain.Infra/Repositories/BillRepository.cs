@@ -115,5 +115,14 @@ namespace FinanceController.Domain.Infra.Repositories
 
             return await billsQueryResult.SumAsync(x => x.Price);
         }
+
+        public async Task<IEnumerable<Bill>> GetRecurringBills(string recurencePattern)
+        {
+            return await _context.Bills
+                .Where(x => x.RecurrencePattern == recurencePattern)
+                .Where(x => x.EffectiveDate < DateTime.Now)
+                .Where(x => x.IsRecurring == true)
+                .ToListAsync();
+        }
     }
 }
