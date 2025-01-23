@@ -62,7 +62,7 @@ builder.Services.AddSwaggerGen(c =>
         }
      });
 });
-
+builder.Services.RegisterAllJobs();
 var app = builder.Build();
 
 // DomainSeed.EnsureSeed(app);

@@ -21,7 +21,8 @@ public class CreateRecurringBills : IJob
             TimeZone = TimeZoneInfo.Local
         };
 
-        manager.AddOrUpdate("createrecurringbils", Job.FromExpression(() => Execute()), Cron.Monthly(1, 0), options);
+        //manager.AddOrUpdate("createrecurringbils", Job.FromExpression(() => Execute()), Cron.Monthly(1, 0), options);
+        manager.AddOrUpdate("createrecurringbills", Job.FromExpression(() => Execute()), Cron.Minutely(), options);
     }
     public async Task Execute()
     {
