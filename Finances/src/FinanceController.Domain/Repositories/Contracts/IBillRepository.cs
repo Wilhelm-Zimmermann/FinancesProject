@@ -14,5 +14,6 @@ namespace FinanceController.Domain.Repositories.Contracts
         Task DeleteBill(Guid id);
         Task<IEnumerable<BillsDto>> ListBillsByUserId(GetAllBillsQuery billQuery, Guid userId);
         Task<decimal> SumAllByUser(Guid userId, GetBillsSumQuery billsQuery);
+        Task<IEnumerable<Bill>> GetRecurringBills(string recurencePattern);
     }
 }
