@@ -4,11 +4,13 @@ using Hangfire;
 using Hangfire.Common;
 
 namespace FinanceController.Domain.Infra.Jobs;
-public class CreateRecurringBills : IJob
+
+[JobLogger]
+public class CreateRecurringBillsJob : IJob
 {
     private readonly BillJobHandler _billJobHandler;
 
-    public CreateRecurringBills(BillJobHandler billJobHandler)
+    public CreateRecurringBillsJob(BillJobHandler billJobHandler)
     {
         _billJobHandler = billJobHandler;
     }
@@ -18,15 +20,21 @@ public class CreateRecurringBills : IJob
         var manager = new RecurringJobManager();
         var options = new RecurringJobOptions
         {
-            TimeZone = TimeZoneInfo.Local
         };
 
         //manager.AddOrUpdate("createrecurringbils", Job.FromExpression(() => Execute()), Cron.Monthly(1, 0), options);
-        manager.AddOrUpdate("createrecurringbills", Job.FromExpression(() => Execute()), Cron.Minutely(), options);
+        manager.AddOrUpdate("createrecurringbills", Job.FromExpression(() => Execute()), "*/3 * * * * *", options);
     }
     public async Task Execute()
     {
-        Console.WriteLine("Creating Recurring bills....");
-        await _billJobHandler.Handle(new CreateBillJobCommand());
+        try
+        {
+            await _billJobHandler.Handle(new CreateBillJobCommand());
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
     }
 }
