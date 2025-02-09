@@ -120,7 +120,7 @@ namespace FinanceController.Domain.Infra.Repositories
         {
             return await _context.Bills
                 .Where(x => x.RecurrencePattern == recurencePattern)
-                .Where(x => x.EffectiveDate < DateTime.Now)
+                .Where(x => x.EffectiveDate < DateTime.UtcNow)
                 .Where(x => x.IsRecurring == true)
                 .ToListAsync();
         }

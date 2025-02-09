@@ -1,6 +1,9 @@
 using FinanceController.Domain.Api.Extensions;
 using FinanceController.Domain.Api.Middlewares;
 using FinanceController.Domain.Api.Seed;
+using FinanceController.Domain.Infra;
+using FinanceController.Domain.Infra.Jobs;
+using Hangfire;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
@@ -10,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.ConfigAuthorizationSettings();
 builder.ResolveMassTransitDependencies();
 builder.Resolve();
+builder.AddHangFire();
+builder.Services.RegisterInfraJobs();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -62,7 +67,6 @@ builder.Services.AddSwaggerGen(c =>
         }
      });
 });
-builder.Services.RegisterAllJobs();
 var app = builder.Build();
 
 // DomainSeed.EnsureSeed(app);
@@ -75,6 +79,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 app.UseMiddleware<UserIdMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseRouting();
