@@ -5,8 +5,15 @@ namespace FinanceController.Domain.Api.Utils;
 
 public class NpgSqlConnection : IConnectionFactory
 {
+    private readonly string _connectionString;
+
+    public NpgSqlConnection(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
     public NpgsqlConnection GetOrCreateConnection()
     {
-        return new NpgsqlConnection("Server=localhost:5432;User Id=postgres;Password=1234;Database=identity");
+        return new NpgsqlConnection(_connectionString);
     }
 }
