@@ -60,7 +60,7 @@ namespace FinanceController.Domain.Api.Extensions
                 .UsePostgreSqlStorage(config => config.UseNpgsqlConnection(builder.Configuration.GetConnectionString("HangfireConnection"))));
             
             builder.Services.AddHangfireServer();
-            var sqlConnection = new NpgSqlConnection();
+            var sqlConnection = new NpgSqlConnection(builder.Configuration.GetConnectionString("HangfireConnection"));
             JobStorage.Current = new PostgreSqlStorage(sqlConnection);
         }
 
