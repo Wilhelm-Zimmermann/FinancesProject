@@ -22,7 +22,7 @@ public class CreateRecurringBillsJob : IJob
         {
         };
 
-        manager.AddOrUpdate("createrecurringbills", Job.FromExpression(() => Execute()), "* 10 * * * *", options);
+        manager.AddOrUpdate("createrecurringbills", Job.FromExpression(() => Execute()), "0 */10 * * * *", options);
     }
     public async Task Execute()
     {
